@@ -107,7 +107,7 @@ router.post('/:userId/questions', (req, res) => {
           }
 
           // uncomment these lines to explore that beautiful blob of data in the console
-          // print = beautify(payload.analyzeSentiment, null, 2, 10);
+          // print = beautify(payload, null, 2, 10);
           // console.log(print)
 
           // return if the answer was too short
@@ -150,6 +150,21 @@ router.post('/:userId/questions', (req, res) => {
             default :
               analysis.overallFeedback = "Oh no! something went wrong! 😕"
           }
+
+          // mount tones on analysis if found
+          analysis.utterancesTones = [];
+
+          // get tones for each utterance (sentance)
+          payload.analyzeTone.utterances_tone.forEach(utterance => {
+            // only look if tones are present
+            if(utterance.tones.length > 0){
+              // there can be many tones per utterance
+              utterance.tones.forEach(tone => {
+                // only push unique tones to analysis
+                if(!analysis.utterancesTones.includes(tone.tone_id)) analysis.utterancesTones.push(tone.tone_id);
+              })
+            }
+          });
 
           //mount analysis on question object
           question.analysis = analysis;

@@ -7,6 +7,7 @@ const answeredQuestionSchema = new mongoose.Schema({
   answer: String,
   analysis: {
     negativeMentions: Array,
+    utterancesTones: Array,
     overallScore: String,
     overallMagnitude: String,
     overallFeedback: String

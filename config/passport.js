@@ -1,7 +1,7 @@
 require('dotenv').config();
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
-const User = require('../models/User');
+const User = require('../models/user');
 const chalk = require('chalk');
 const toolbox = require('../private/toolbox');
 

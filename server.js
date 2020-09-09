@@ -30,7 +30,22 @@ const mongooseOptions = {
   useCreateIndex: true
 };
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/innervuedb', mongooseOptions);
+// connect to local database for development
+if(process.env.NODE_ENV === 'development'){
+  mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/innervuedb', mongooseOptions); 
+} else {
+  const MongoClient = require('mongodb').MongoClient;
+  const uri = process.env.MONGOD_URI
+  console.log(typeof uri)
+  const client = new MongoClient(uri, { useNewUrlParser: true });
+  client.connect(err => {
+    const collection = client.db("test").collection("devices");
+    // perform actions on the collection object
+    client.close();
+  });
+  
+  mongoose.connect(uri, mongooseOptions).then((() => console.log('MONGOOSE CONNECTED'))).catch(error => toolbox.logError(error))
+}
 
 const db = mongoose.connection;
 

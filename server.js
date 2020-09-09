@@ -30,7 +30,7 @@ const mongooseOptions = {
   useCreateIndex: true
 };
 
-// connect to local database for development
+// check node enviroment for database connection
 if(process.env.NODE_ENV === 'development'){
   mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/innervuedb', mongooseOptions); 
 } else {
@@ -43,7 +43,6 @@ if(process.env.NODE_ENV === 'development'){
     // perform actions on the collection object
     client.close();
   });
-  
   mongoose.connect(uri, mongooseOptions).then((() => console.log('MONGOOSE CONNECTED'))).catch(error => toolbox.logError(error))
 }
 
